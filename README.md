@@ -1,2 +1,2 @@
-# Development-Economics
-For Development Economics Class UAB, IDEA
+# Growth and Development
+Growth and Development Class, Winter 2019,  UAB, IDEA.
