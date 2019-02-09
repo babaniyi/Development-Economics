@@ -275,6 +275,75 @@ plt.savefig('a12')
 plt.show()
 
 
+
+
+
+
+
+#%% 1.5 CWI shares by percentiles (Inequality a la Piketty)
+    
+def percentiles_shares(variable1, dataset, percentile = np.array([0,0.01, 0.05, 0.1, 0, 0.2, 0.4, 0.6, 0.8, 1, 0.90, 0.95, 0.99, 1])):
+    c_array = np.sort(np.array(dataset[variable1].dropna()))
+    c_total = sum(c_array)
+    n= len(c_array)
+    percentiles = n*percentile
+    percentiles = percentiles.tolist()
+    percentiles = [int(x) for x in percentiles]
+    bottom = percentiles [0:4]
+    quintiles = percentiles [4:10]
+    top = percentiles [10:15]
+    mg_bottom= []
+    for i in range(0,len(bottom)):
+        a = sum(c_array[bottom[0]:bottom[i]])/c_total
+        mg_bottom.append(a)
+    mg_quintiles = []
+    for i in range(1,len(quintiles)):
+        b = sum(c_array[quintiles[i-1]:quintiles[i]])/c_total
+        mg_quintiles.append(b)
+    mg_top = []
+    for i in range(0,len(top)):
+        c = sum(c_array[top[i]:top[3]])/c_total
+        mg_top.append(c)               
+    return mg_bottom, mg_quintiles, mg_top
+
+
+# percentile shares Uganda------------------------------------
+bottom_cwi = []
+quintiles_cwi = []
+top_cwi = []
+
+for serie in ["ctotal","inctotal","totW"]:
+    bottom, quin, top = percentiles_shares(serie, dataset=data)
+    bottom_cwi.append(bottom)
+    quintiles_cwi.append(quin)
+    top_cwi.append(top)
+
+# percentile shares Uganda Rural ----------------------------------
+data_rural =  data.loc[data['urban'] == 0] 
+bottom_cwi_rur = []
+quintiles_cwi_rur = []
+top_cwi_rur = []
+
+for serie in ["ctotal","inctotal","totW"]:
+    bottom, quin, top = percentiles_shares(serie, dataset= data_rural)
+    bottom_cwi_rur.append(bottom)
+    quintiles_cwi_rur.append(quin)
+    top_cwi_rur.append(top)
+  
+# percentile shares Uganda Urban ----------------------------------
+data_urban =  data.loc[data['urban'] == 1] 
+bottom_cwi_urb = []
+quintiles_cwi_urb = []
+top_cwi_urb = []
+
+for serie in ["ctotal","inctotal","wtotal"]:
+    bottom, quin, top = percentiles_shares(serie, dataset= data_urban)
+    bottom_cwi_urb.append(bottom)
+    quintiles_cwi_urb.append(quin)
+    top_cwi_urb.append(top)
+
+
+
 #%%SUMMARY STATISTICS
 np.ceil(data[["ctotal","ctotal_dur","ctotal_gift","cfood","cnodur"]].describe()/dollars)
 np.ceil(data[["inctotal","wage_total","bs_profit","profit_agr","profit_ls"]].describe()/dollars)
@@ -327,12 +396,73 @@ lab["e"].describe() ## employment rate
 lab_rural = lab.loc[lab["urban"]==0]
 lab_urban = lab.loc[lab["urban"]==1]
 
+lab_rural= lab_rural[["h", "eh"]].apply(np.log)
+lab_rural[lab_rural == -inf] = 0
+
+lab_urban= lab_urban[["h", "eh"]].apply(np.log)
+lab_urban[lab_urban == -inf] = 0
+
+lab_rural = lab_rural.replace(np.nan,0)
+lab_urban = lab_urban.replace(np.nan,0)
+
 ##---- labor hours for urban and rural areas
 lab_urban["eh"].describe()
 lab_urban["h"].describe()
 
 lab_rural["eh"].describe()
 lab_rural["h"].describe()
+
+#========= Men and Women --------#############
+lab_m = lab.loc[lab["sex"]==1]
+lab_f = lab.loc[lab["sex"]==2] # 
+
+lab_m["eh"].describe()
+lab_m["h"].describe()
+
+lab_f["eh"].describe()
+lab_f["h"].describe()
+
+
+import seaborn as sns, numpy as np
+sns.distplot(lab_m["h"],hist=False , label='Men', kde=True)
+sns.distplot(lab_f["h"],hist=False , label='Women', kde=True)
+plt.legend(loc='upper right')
+plt.xlabel('Hours worked ')
+plt.ylabel('Probability')
+plt.title('Average hours worked per worker')
+plt.savefig('labmen.png')
+plt.show()
+
+lab_no = lab.loc[lab["father_educ"]==1] # no formal educ
+lab_lp = lab.loc[lab["father_educ"]==2] # less than primary 
+lab_p = lab.loc[lab["father_educ"]==3] # completed primary
+lab.father_educ = lab.father_educ.replace([5,6,51,61],4)
+lab_hs = lab.loc[lab["father_educ"]==4] # completed higher than secondary
+
+lab_no["eh"].describe()
+lab_no["h"].describe()
+
+lab_lp["eh"].describe()
+lab_lp["h"].describe()
+
+lab_p["eh"].describe()
+lab_p["h"].describe()
+
+lab_hs["eh"].describe()
+lab_hs["h"].describe()
+
+import seaborn as sns, numpy as np
+sns.distplot(lab_no["h"],hist=False , label='No Pry', kde=True)
+sns.distplot(lab_lp["h"],hist=True , label='Less than Pry', kde=True)
+sns.distplot(lab_p["h"],hist=True , label='Compl. Pry', kde=True)
+sns.distplot(lab_hs["h"],hist=True , label='Sec&Higher', kde=True)
+plt.legend(loc='upper right')
+plt.xlabel('Hours worked ')
+plt.ylabel('Probability')
+plt.title('Average hours worked per worker')
+plt.savefig('labschool.png')
+plt.show()
+
 
 
 #======== Q2. Redo separately for women and men, and by education groups (less than primary school======
