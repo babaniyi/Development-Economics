@@ -11,7 +11,8 @@ To begin with, the codes are structured in a manner to make interpretation easie
 4. For social demography / background/descriptive statistics of respondents is titled 'socdem'
 5. For merging of the above 1 - 4 dataset is titled 'fullanalysis'
 6. For the problem set 1 questions is titled 'PS1'
-7. The results, output ad intepretation of charts, tables and others of the problem set is titled 'BabaniyiOlaniyiFullPS1'
+7. The results, output and intepretation of charts, tables and others of the problem set is titled 'BabaniyiOlaniyiFullUpdatedPS1'
+8. 
 
 # Data Description:
 The LSMS-ISA project is supporting the design and implementation of the Uganda National Panel Survey (UNPS), with a focus on expanding the agricultural content of the UNPS as well as ensuring comparability with other surveys being carried out under the LSMS-ISA project in Sub-Saharan Africa. The emphasis is to ensure that information on agriculture and livestock, and data on food and nutrition security inter alia, are mainstreamed into the UNPS, and that the quality and relevance of these data is further improved and made sustainable over time. For this problem set, we use the household and agriculture data set collected from 2013 – 2014 for Uganda.
