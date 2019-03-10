@@ -24,7 +24,7 @@ Software used: Python
 1. The solution is titled 'BabaniyiGnDPS2'
 2. Python code is titled 'BabaniyiGnDPS2.py'
 
-# Problem Set 2
+# Problem Set 3
 Software used: Python and R
 I used pythin for data imputation and cleansing, and R for iterating the regression and corresponding graphs.
 1. The solution is titled 'PS3BabaniyiOlaniyi'
